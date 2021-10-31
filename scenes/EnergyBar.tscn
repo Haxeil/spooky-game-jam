@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://EnergyBar.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Animation/Pionter/Heal2.png" type="Texture" id=2]
+[ext_resource path="res://scenes/HealthBar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Animation/Pionter/Blood2.png" type="Texture" id=4]
+
+[node name="EnergyBar" instance=ExtResource( 3 )]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 0.0
+margin_bottom = 0.0
+script = ExtResource( 1 )
+danger_color_over = Color( 0.992157, 0.556863, 0, 1 )
+normal_color_over = Color( 0, 0, 0, 1 )
+danger_color_progress = Color( 0.572549, 0.0313726, 0.0313726, 1 )
+recharging_color = Color( 0.556863, 0.984314, 0.0392157, 1 )
+
+[node name="HealthBarUnder" parent="." index="0"]
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 204.0
+margin_bottom = 16.0
+value = 100.0
+texture_progress = ExtResource( 4 )
+tint_progress = Color( 1, 0.968627, 0, 1 )
+
+[node name="TextureRect" parent="." index="1"]
+visible = false
+texture = ExtResource( 2 )
+
+[node name="HealthBar" parent="." index="2"]
+modulate = Color( 1, 1, 1, 0.870588 )
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 204.0
+margin_bottom = 8.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 4 )

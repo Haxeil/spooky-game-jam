@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Animation/Monster/Fire/Fire1.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Animation/Monster/Fire/Fire2.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/FireObstacle.gd" type="Script" id=3]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 8.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "Noth",
+"speed": 5.0
+} ]
+
+[node name="FireObstacle" type="Area2D"]
+collision_layer = 0
+script = ExtResource( 3 )
+damage_velocity = Vector2( 0, 500 )
+
+[node name="Anim" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "Noth"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PoolVector2Array( -28.0569, 31.3922, -28.2553, 26.0347, -10.585, 0.607536, -1.57486, 4.61206, 13.1084, -6.90094, 28.2958, 31.3922 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+
+[node name="DelayHurt" type="Timer" parent="."]
+wait_time = 1.2
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_FireObstacle_body_entered"]
+[connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

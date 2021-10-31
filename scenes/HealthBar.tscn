@@ -1,0 +1,54 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/HealthBar.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Animation/Pionter/bloodHeal2.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Animation/Pionter/Heal.png" type="Texture" id=3]
+
+[node name="HealthBar" type="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -960.0
+margin_top = -540.0
+margin_right = 960.0
+margin_bottom = 540.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+danger_color_over = Color( 0.733333, 0.00392157, 0.00392157, 1 )
+normal_color_over = Color( 0.984314, 0.0392157, 0.0392157, 1 )
+danger_color_progress = Color( 0.490196, 0.0235294, 0.0235294, 1 )
+normal_color_progress = Color( 0.984314, 0.0392157, 0.0392157, 1 )
+
+[node name="HealthBarUnder" type="TextureProgress" parent="."]
+margin_left = 150.69
+margin_top = 148.13
+margin_right = 354.69
+margin_bottom = 164.13
+texture_progress = ExtResource( 2 )
+tint_progress = Color( 0.0392157, 0.368627, 1, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 82.0
+margin_top = 72.0
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthBar" type="TextureProgress" parent="."]
+margin_left = 150.613
+margin_top = 148.464
+margin_right = 354.613
+margin_bottom = 156.464
+texture_progress = ExtResource( 2 )
+tint_progress = Color( 0.984314, 0.0392157, 0.0392157, 1 )
+
+[node name="Tween" type="Tween" parent="."]
