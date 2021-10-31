@@ -13,9 +13,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/haxeil/Dev/spooky-game-jam/Spooky-hame-jam.csproj",
-      "projectName": "Spooky-hame-jam",
-      "projectPath": "/home/haxeil/Dev/spooky-game-jam/Spooky-hame-jam.csproj",
+      "projectUniqueName": "/home/haxeil/Dev/spooky-game-jam/BloodBlaster.csproj",
+      "projectName": "BloodBlaster",
+      "projectPath": "/home/haxeil/Dev/spooky-game-jam/BloodBlaster.csproj",
       "packagesPath": "/home/haxeil/.nuget/packages/",
       "outputPath": "/home/haxeil/Dev/spooky-game-jam/.mono/temp/obj/",
       "projectStyle": "PackageReference",

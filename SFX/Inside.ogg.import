@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Inside.ogg-8a0b13f4b80da5045cd542c8279fc93a.oggstr"
+
+[deps]
+
+source_file="res://SFX/Inside.ogg"
+dest_files=[ "res://.import/Inside.ogg-8a0b13f4b80da5045cd542c8279fc93a.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

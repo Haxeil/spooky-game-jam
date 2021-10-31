@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Hober.ogg-21154b7b34d4613f30a285e90c4e99e6.oggstr"
+
+[deps]
+
+source_file="res://SFX/Hober.ogg"
+dest_files=[ "res://.import/Hober.ogg-21154b7b34d4613f30a285e90c4e99e6.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

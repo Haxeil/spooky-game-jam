@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Intro.ogv" type="VideoStream" id=1]
+[ext_resource path="res://scenes/Vid.gd" type="Script" id=2]
+
+[node name="VidIntro" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = 547.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VideoPlayer" type="VideoPlayer" parent="."]
+margin_right = 1920.0
+margin_bottom = 1080.0
+stream = ExtResource( 1 )
+buffering_msec = 1000
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[node name="Change" type="Timer" parent="."]
+wait_time = 29.5
+one_shot = true
+
+[connection signal="finished" from="VideoPlayer" to="." method="_on_VideoPlayer_finished"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="Change" to="." method="_on_Change_timeout"]

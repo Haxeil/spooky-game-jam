@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RAhT1TAKv+4P8avlgufjmHT8Jvm+dKr5exSlbF70vvIfRLnX0FWraxIwcjtS56RVVE0wKnqEaMHWXByS2aCVSA==",
+  "dgSpecHash": "w8UN5w6jFczuMC68GOZdD722Q5gwFfEFN3+peI5tcXq1JfBJ6tnfX5EBQ7xb3XP5ayCmkmMcQAs6WXkgAi80LA==",
   "success": true,
-  "projectFilePath": "/home/haxeil/Dev/spooky-game-jam/Spooky-hame-jam.csproj",
+  "projectFilePath": "/home/haxeil/Dev/spooky-game-jam/BloodBlaster.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

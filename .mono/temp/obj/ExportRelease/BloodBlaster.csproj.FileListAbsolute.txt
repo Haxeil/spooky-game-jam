@@ -1,0 +1,8 @@
+/home/haxeil/Dev/spooky-game-jam/.mono/temp/bin/ExportRelease/BloodBlaster.dll
+/home/haxeil/Dev/spooky-game-jam/.mono/temp/bin/ExportRelease/BloodBlaster.pdb
+/home/haxeil/Dev/spooky-game-jam/.mono/temp/obj/ExportRelease/BloodBlaster.csprojAssemblyReference.cache
+/home/haxeil/Dev/spooky-game-jam/.mono/temp/obj/ExportRelease/BloodBlaster.AssemblyInfoInputs.cache
+/home/haxeil/Dev/spooky-game-jam/.mono/temp/obj/ExportRelease/BloodBlaster.AssemblyInfo.cs
+/home/haxeil/Dev/spooky-game-jam/.mono/temp/obj/ExportRelease/BloodBlaster.csproj.CoreCompileInputs.cache
+/home/haxeil/Dev/spooky-game-jam/.mono/temp/obj/ExportRelease/BloodBlaster.dll
+/home/haxeil/Dev/spooky-game-jam/.mono/temp/obj/ExportRelease/BloodBlaster.pdb

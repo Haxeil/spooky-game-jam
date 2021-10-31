@@ -38,6 +38,14 @@ public class Player : KinematicBody2D
 	[Signal] public delegate void maxEnergyUpdated(float maxEnergy);
 	[Signal] public delegate void killed(Player player);
 
+	private Node2D jumpSfxs;
+	private AudioStreamPlayer2D walkSfx;
+	private AudioStreamPlayer2D landSfx;
+	private AudioStreamPlayer2D wallSlideSfx;
+	private AudioStreamPlayer2D deadSfx;
+	private Node2D hurtSfxs;
+	private AudioStreamPlayer2D climbSfx;
+	private Timer deathRestart;
 	StateMachine state = new StateMachine();
 	public override void _Ready() {
 		Init();
@@ -60,6 +68,14 @@ public class Player : KinematicBody2D
 		leftCheckSlide = GetNode<Node2D>("LeftCheckSlide");
 		cayoteTimer = GetNode<Timer>("CayoteTime");
 		bloodClot = GetNode<Timer>("BloodClot");
+		jumpSfxs = GetNode<Node2D>("Sfx/JumpSfxs");
+		walkSfx = GetNode<AudioStreamPlayer2D>("Sfx/Walk");
+		landSfx = GetNode<AudioStreamPlayer2D>("Sfx/Land");
+		wallSlideSfx = GetNode<AudioStreamPlayer2D>("Sfx/WallSlide");
+		deadSfx = GetNode<AudioStreamPlayer2D>("Sfx/Dead");
+		hurtSfxs = GetNode<Node2D>("Sfx/HurtSfx");
+		climbSfx = GetNode<AudioStreamPlayer2D>("Sfx/WallClimb");
+		deathRestart = GetNode<Timer>("DeathRestart");
 	}
 	public override void _PhysicsProcess(float delta)
 	{
@@ -99,7 +115,9 @@ public class Player : KinematicBody2D
 
 		FlipH(this.direction);
 
+		
 		WallSlide(delta);
+		
 
 		bool wasOnFloor = this.isGrounded;
 
@@ -111,7 +129,6 @@ public class Player : KinematicBody2D
 		{
 			cayoteTimer.Start();
 		}
-
 		
 	}
 
@@ -134,13 +151,16 @@ public class Player : KinematicBody2D
 
 		if (this.isGrounded) {
 			if (NotDeadOrHurt()) {
+				
 				velocity.y = 0;
-
+				if (this.state.currentState == Enums.PlayerState.FALL) {
+					PlaySfxIfNotPlaying(landSfx);
+				}
 			}
 		} else {
 			velocity.y += this.gravity;
 
-			if (this.velocity.y != 0 && this.velocity.y > this.gravity && this.velocity.y > -this.jumpPower/this.gravity)
+			if (this.velocity.y != 0 && this.velocity.y > this.gravity && this.velocity.y > -this.jumpPower/this.gravity && !this.isWallSliding)
 			{
 				EmitSignal("changeState", Enums.PlayerState.FALL);
 			}
@@ -172,24 +192,9 @@ public class Player : KinematicBody2D
 		if (this.state.currentState == Enums.PlayerState.DEAD) {
 			return;
 		}
-		// if (state == Enums.PlayerState.DEAD || this.state.currentState == Enums.PlayerState.DEAD) {
-		// 	this.state.currentState = Enums.PlayerState.DEAD;
-		// 	return;
-		// }
 
 		this.state.nexState = state; //Jump // falling // moving // moving 
 		
-
-		
-		// if (this.state.nexState != Enums.PlayerState.SLIDE) {
-		// 	if ((this.state.currentState == Enums.PlayerState.JUMP || this.state.currentState == Enums.PlayerState.FALL) && !this.isGrounded) {
-		// 		return;
-		// 	}
-		// }
-
-		
-
-
 		// dont change the prevState if the nextState = the currentState
 		if (this.state.nexState != this.state.currentState)
 		{
@@ -197,8 +202,44 @@ public class Player : KinematicBody2D
 		}
 		this.state.currentState = this.state.nexState; //jump  // fall // moving // moving
 		PlayAnimation();
+		PlaySounds();
 	}
 
+	private void PlaySounds() {
+		if (this.state.currentState != Enums.PlayerState.RUN) {
+			StopPlayingSfx(walkSfx);
+		}
+
+		if (this.state.currentState != Enums.PlayerState.SLIDE) {
+			StopPlayingSfx(wallSlideSfx);
+		}
+
+		if (this.state.currentState != Enums.PlayerState.BOARD) {
+			StopPlayingSfx(climbSfx);
+		}
+
+		switch (this.state.currentState) {
+			case Enums.PlayerState.RUN:
+				PlaySfxIfNotPlaying(walkSfx);
+				break;
+			case Enums.PlayerState.BOARD:
+				PlaySfxIfNotPlaying(climbSfx);
+				break;
+			case Enums.PlayerState.JUMP:
+				PlayJumpSound();
+				break;
+			case Enums.PlayerState.SLIDE:
+				PlaySfxIfNotPlaying(wallSlideSfx);
+				break;
+			case Enums.PlayerState.HURT:
+				PlayHutSound();
+				break;
+			case Enums.PlayerState.DEAD: 
+				PlaySfxIfNotPlaying(deadSfx);
+				break;
+
+		}
+	}
 
 	private void PlayAnimation() {
 		
@@ -216,6 +257,9 @@ public class Player : KinematicBody2D
 				this.animSprite.Play("Jump");
 				break;
 			case Enums.PlayerState.SLIDE:
+				this.animSprite.Play("Slide");
+				break;
+			case Enums.PlayerState.WALLIDLE:
 				this.animSprite.Play("Slide");
 				break;
 			case Enums.PlayerState.FALL:
@@ -244,19 +288,23 @@ public class Player : KinematicBody2D
 		if (this.isWallSliding && !this.isGrounded && !RayCheckOnCelling()) {
 			if (Input.IsActionPressed("Down")) {
 				velocity.y += this.wallSlideSpeedDown * delta;
+				EmitSignal("changeState", Enums.PlayerState.SLIDE);
+
 				velocity.y = Mathf.Clamp(velocity.y, this.wallSlideSpeedDown, this.maxWallSlideSpeed);
 			} else {
+								
 				this.velocity.y = 0;
+				if (this.boardingUp == false) {
+					EmitSignal("changeState", Enums.PlayerState.WALLIDLE);
+
+				}
 			}
 			if (this.direction == 1) {
 				animSprite.SetDeferred("flip_h", true);
 			} else {
 				animSprite.SetDeferred("flip_h", false);
 			}
-			if (!this.boardingUp) {
-				EmitSignal("changeState", Enums.PlayerState.SLIDE);
 
-			}
 		}
 
 		if (!RayCheckOnCelling() && !this.isGrounded && this.wasSliding && !this.isWallSliding) {
@@ -394,7 +442,7 @@ public class Player : KinematicBody2D
 
 		EmitSignal("changeState", Enums.PlayerState.DEAD);
 		await ToSignal(this.animSprite, "animation_finished");
-		//QueueFree();
+		deathRestart.Start();
 	}
 
 	private bool NotDeadOrHurt() {
@@ -416,4 +464,97 @@ public class Player : KinematicBody2D
 		ApplyEnergyDamage(5);
 	}
 
+	private void PlaySfxIfNotPlaying(AudioStreamPlayer2D sfx) {
+		if (!sfx.Playing) {
+			sfx.Play();
+		}
+	}
+
+	private void StopPlayingSfx(AudioStreamPlayer2D sfx) {
+		if (sfx.Playing) {
+			sfx.Stop();
+		}
+	}
+
+	private void PlayHutSound() {
+		var rand = new Random();
+		int anim = rand.Next(0, 1);
+
+		Action<int> playRandomSfx = (int indx)  => {
+			PlaySfxIfNotPlaying(this.hurtSfxs.GetChild<AudioStreamPlayer2D>(indx));
+		};
+
+		switch (anim)
+		{
+			
+			case 0:
+				playRandomSfx(anim);
+				break;
+			case 1:
+				playRandomSfx(anim);
+				break;
+			case 2:
+				playRandomSfx(anim);
+				break;
+			case 3:
+				playRandomSfx(anim);
+				break;
+		}
+
+	}
+	private void PlayJumpSound() {
+		var rand = new Random();
+		int anim = rand.Next(0, 3);
+		
+		Action<int> playRandomSfx = (int indx)  => {
+			PlaySfxIfNotPlaying(this.jumpSfxs.GetChild<AudioStreamPlayer2D>(indx));
+		};
+
+		switch (anim)
+		{
+			
+			case 0:
+				playRandomSfx(anim);
+				break;
+			case 1:
+				playRandomSfx(anim);
+				break;
+			case 2:
+				playRandomSfx(anim);
+				break;
+			case 3:
+				playRandomSfx(anim);
+				break;
+		}
+
+
+	}
+	private void _on_BloodSteps_body_entered(object body)
+	{
+		var speech_player = new AudioStreamPlayer();
+		var audio_file = "res://SFX/BloodWalk.wav";
+
+		var bloodWalk = ResourceLoader.Load(audio_file) as AudioStream;
+		this.walkSfx.Stream = bloodWalk;
+	}
+
+	private void _on_FinalCheckPoint_body_entered(object body)
+	{
+		SetPhysicsProcess(false);
+	}
+
+	private void _on_DeathRestart_timeout()
+	{
+		GetTree().ChangeScene("res://MainScenes/World.tscn");
+	}
 }
+
+
+
+
+
+
+
+
+
+

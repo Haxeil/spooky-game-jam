@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://Assets/Animation/Jump/Jump1.png" type="Texture" id=1]
 [ext_resource path="res://Player/Player.cs" type="Script" id=2]
@@ -30,6 +30,17 @@
 [ext_resource path="res://Assets/Animation/Boarding/Boarding3.png" type="Texture" id=28]
 [ext_resource path="res://Assets/Animation/Boarding/Boarding2.png" type="Texture" id=29]
 [ext_resource path="res://Assets/Animation/Boarding/Boarding1.png" type="Texture" id=30]
+[ext_resource path="res://SFX/Jump1.wav" type="AudioStream" id=31]
+[ext_resource path="res://SFX/Jump2.wav" type="AudioStream" id=32]
+[ext_resource path="res://SFX/Jump4.wav" type="AudioStream" id=33]
+[ext_resource path="res://SFX/Jump3.wav" type="AudioStream" id=34]
+[ext_resource path="res://SFX/WalkLoop.ogg" type="AudioStream" id=35]
+[ext_resource path="res://SFX/WallSlide.wav" type="AudioStream" id=36]
+[ext_resource path="res://SFX/Jump.wav" type="AudioStream" id=37]
+[ext_resource path="res://SFX/Dead.wav" type="AudioStream" id=38]
+[ext_resource path="res://SFX/Hit1.wav" type="AudioStream" id=39]
+[ext_resource path="res://SFX/Hit2.wav" type="AudioStream" id=40]
+[ext_resource path="res://SFX/Climbing.ogg" type="AudioStream" id=41]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -117,8 +128,47 @@ editor_draw_limits = true
 [node name="AnimSprite" type="AnimatedSprite" parent="."]
 position = Vector2( -6.58165, -28.6228 )
 frames = SubResource( 1 )
-animation = "Board"
-frame = 2
+animation = "Idle"
+
+[node name="Sfx" type="Node2D" parent="."]
+
+[node name="JumpSfxs" type="Node2D" parent="Sfx"]
+
+[node name="Jump1" type="AudioStreamPlayer2D" parent="Sfx/JumpSfxs"]
+stream = ExtResource( 31 )
+
+[node name="Jump2" type="AudioStreamPlayer2D" parent="Sfx/JumpSfxs"]
+stream = ExtResource( 32 )
+
+[node name="Jump3" type="AudioStreamPlayer2D" parent="Sfx/JumpSfxs"]
+stream = ExtResource( 34 )
+
+[node name="Jump4" type="AudioStreamPlayer2D" parent="Sfx/JumpSfxs"]
+stream = ExtResource( 33 )
+
+[node name="Walk" type="AudioStreamPlayer2D" parent="Sfx"]
+stream = ExtResource( 35 )
+
+[node name="Land" type="AudioStreamPlayer2D" parent="Sfx"]
+stream = ExtResource( 37 )
+
+[node name="WallSlide" type="AudioStreamPlayer2D" parent="Sfx"]
+stream = ExtResource( 36 )
+pitch_scale = 0.91
+
+[node name="Dead" type="AudioStreamPlayer2D" parent="Sfx"]
+stream = ExtResource( 38 )
+
+[node name="HurtSfx" type="Node2D" parent="Sfx"]
+
+[node name="Hit1" type="AudioStreamPlayer2D" parent="Sfx/HurtSfx"]
+stream = ExtResource( 39 )
+
+[node name="Hit2" type="AudioStreamPlayer2D" parent="Sfx/HurtSfx"]
+stream = ExtResource( 40 )
+
+[node name="WallClimb" type="AudioStreamPlayer2D" parent="Sfx"]
+stream = ExtResource( 41 )
 
 [node name="InFloor" type="Node2D" parent="."]
 
@@ -203,5 +253,10 @@ collision_mask = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 2 )
 
+[node name="DeathRestart" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="changeState" from="." to="." method="OnChangeState"]
 [connection signal="timeout" from="BloodClot" to="." method="_on_BloodClot_timeout"]
 [connection signal="timeout" from="BloodClotEveryTime" to="." method="_on_BloodClotEveryTime_timeout"]
+[connection signal="timeout" from="DeathRestart" to="." method="_on_DeathRestart_timeout"]

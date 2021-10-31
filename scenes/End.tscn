@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/Animation/END/End6.png" type="Texture" id=1]
 [ext_resource path="res://Assets/Animation/END/End5.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Assets/Animation/END/End1.png" type="Texture" id=8]
 [ext_resource path="res://Assets/Animation/END/End10.png" type="Texture" id=9]
 [ext_resource path="res://Assets/Animation/END/End8.png" type="Texture" id=10]
+[ext_resource path="res://scenes/End.gd" type="Script" id=11]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -25,8 +26,14 @@ animations = [ {
 } ]
 
 [node name="End" type="Node2D"]
+script = ExtResource( 11 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 animation = "nothing"
 centered = false
+
+[node name="End" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Climbing.ogg-1f57262bd64a6724dc60d9a5b98fdbaa.oggstr"
+
+[deps]
+
+source_file="res://SFX/Climbing.ogg"
+dest_files=[ "res://.import/Climbing.ogg-1f57262bd64a6724dc60d9a5b98fdbaa.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

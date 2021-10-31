@@ -10,8 +10,8 @@ config_version=4
 
 [application]
 
-config/name="Spooky-hame-jam"
-run/main_scene="res://MainScenes/World.tscn"
+config/name="BloodBlaster"
+run/main_scene="res://scenes/MainUI.tscn"
 boot_splash/image="res://Assets/FrontGround.png"
 config/icon="res://icon.png"
 
